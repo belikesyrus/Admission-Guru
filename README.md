@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 🎓 Admission Guru
 
 A web app that helps Maharashtra students find eligible colleges based on their MHT-CET / Diploma / Pharmacy cutoff data for 2025.
@@ -164,3 +165,7 @@ All cutoff files are plain CSV text (some carry a `.csv.xls` extension — they 
 ## License
 
 MIT
+=======
+# Admission-Guru
+Our Project will give you the best prefrence list of colleges according to your exam percentage, Category, and the branch you preferred that will help you to fill the option filling form of that exams, our project includes exams like CET,JEE,DIOLOMA,DSY ENGINEERING, PHARMACY, DSY PHARMACY.
+>>>>>>> e367b89a5ce781557ac86860d2ec67f02e3d3823
