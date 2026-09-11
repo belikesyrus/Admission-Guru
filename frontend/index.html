@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admission Guru — Find Your Perfect College Match</title>
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+<!-- ═══════════════════════════  NAVBAR  ══════════════════════════════════ -->
+<nav class="navbar" id="navbar">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo">
+      <span class="logo-icon">🎓</span>
+      <span class="logo-text">Admission<span class="logo-accent">Guru</span></span>
+    </a>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">&#9776;</button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="/" class="nav-link active">Home</a></li>
+      <li><a href="pages/predict.html" class="nav-link">Predict College</a></li>
+      <li><a href="pages/dashboard.html" class="nav-link" id="dashLink" style="display:none">My Lists</a></li>
+      <li><a href="pages/about.html" class="nav-link">About</a></li>
+      <li id="authLinks">
+        <a href="pages/login.html" class="nav-link btn-outline-sm">Login</a>
+        <a href="pages/signup.html" class="nav-link btn-primary-sm">Sign Up</a>
+      </li>
+      <li id="userMenu" style="display:none">
+        <span class="user-greeting" id="userGreeting"></span>
+        <button class="btn-outline-sm" id="logoutBtn">Logout</button>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════  HERO  ════════════════════════════════════ -->
+<section class="hero" id="hero">
+  <div class="hero-bg">
+    <div class="hero-overlay"></div>
+    <!-- Decorative floating shapes -->
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+    <div class="shape shape-3"></div>
+  </div>
+  <div class="hero-content">
+    <div class="hero-badge">Maharashtra Admission 2025-26</div>
+    <h1 class="hero-title">
+      <span class="title-line1">ADMISSION</span>
+      <span class="title-line2">GURU</span>
+    </h1>
+    <p class="hero-tagline">Find Your Perfect College Match</p>
+    <p class="hero-desc">
+      Enter your CET percentile, rank, or marks — get a personalised preference list of colleges you're eligible for, ranked by admission chance. Powered by official 2025 cutoff data.
+    </p>
+    <div class="hero-actions">
+      <a href="pages/predict.html" class="btn-hero-primary">
+        🚀 Predict My College
+      </a>
+      <a href="#how-it-works" class="btn-hero-secondary">
+        How it works ↓
+      </a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat">
+        <span class="stat-num">50,000+</span>
+        <span class="stat-label">Cutoff Records</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">6</span>
+        <span class="stat-label">Exam Types</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">4</span>
+        <span class="stat-label">CAP Rounds</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">Free</span>
+        <span class="stat-label">Always</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════  HOW IT WORKS  ════════════════════════════ -->
+<section class="section how-it-works" id="how-it-works">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-badge">Simple &amp; Fast</span>
+      <h2 class="section-title">How Admission Guru Works</h2>
+      <p class="section-sub">Three easy steps to your personalised college list</p>
+    </div>
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-icon" style="background:#dbeafe">📝</div>
+        <div class="step-num">1</div>
+        <h3>Enter Your Details</h3>
+        <p>Select your exam type, enter your percentile/rank, category, preferred branch, and other details.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-icon" style="background:#dcfce7">⚙️</div>
+        <div class="step-num">2</div>
+        <h3>Smart Prediction</h3>
+        <p>Our engine compares your score against 2025 official cutoff data and ranks colleges by admission chance.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-icon" style="background:#fef3c7">🏫</div>
+        <div class="step-num">3</div>
+        <h3>Get Your List</h3>
+        <p>Download a PDF preference list sorted into Safe, Moderate, and Ambitious tiers — ready to use for CAP.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════  EXAM TYPES  ══════════════════════════════ -->
+<section class="section exam-types-section" id="exams">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-badge">Supported Exams</span>
+      <h2 class="section-title">Which Exam Did You Take?</h2>
+      <p class="section-sub">We support all major Maharashtra admission pathways</p>
+    </div>
+    <div class="exam-grid">
+      <a href="pages/predict.html?exam=CET" class="exam-card">
+        <div class="exam-icon">🏛️</div>
+        <h3>CET Engineering</h3>
+        <p>Maharashtra Common Entrance Test for B.E. / B.Tech admission via CAP rounds</p>
+        <span class="exam-tag">CAP Round 1–4</span>
+      </a>
+      <a href="pages/predict.html?exam=DSY_Engineering" class="exam-card">
+        <div class="exam-icon">🔧</div>
+        <h3>Direct Second Year Engg</h3>
+        <p>Diploma holder lateral entry to Second Year Engineering programs</p>
+        <span class="exam-tag">Diploma → B.E.</span>
+      </a>
+      <a href="pages/predict.html?exam=Diploma" class="exam-card">
+        <div class="exam-icon">📐</div>
+        <h3>Diploma (Post SSC)</h3>
+        <p>Post-SSC admission to full-time Technical Diploma courses via DTE</p>
+        <span class="exam-tag">DTE CAP Round 1–2</span>
+      </a>
+      <a href="pages/predict.html?exam=Pharmacy" class="exam-card">
+        <div class="exam-icon">💊</div>
+        <h3>Pharmacy (B.Pharm)</h3>
+        <p>CET-based admission to B.Pharmacy and Pharm.D programs</p>
+        <span class="exam-tag">CAP Round 1–4</span>
+      </a>
+      <a href="pages/predict.html?exam=DSY_Pharmacy" class="exam-card">
+        <div class="exam-icon">🧪</div>
+        <h3>Direct Second Year Pharmacy</h3>
+        <p>Diploma-to-Pharmacy lateral entry admission via CAP</p>
+        <span class="exam-tag">Diploma → B.Pharm</span>
+      </a>
+      <a href="pages/predict.html?exam=JEE" class="exam-card exam-card-soon">
+        <div class="exam-icon">📊</div>
+        <h3>JEE Mains / Advanced</h3>
+        <p>National-level engineering entrance for NITs, IITs and centrally funded institutes</p>
+        <span class="exam-tag coming">Coming Soon</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════  FEATURES  ════════════════════════════════ -->
+<section class="section features-section">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-badge">Why Choose Us</span>
+      <h2 class="section-title">Built for Maharashtra Students</h2>
+    </div>
+    <div class="features-grid">
+      <div class="feature-item">
+        <span class="feat-icon">📊</span>
+        <div>
+          <h4>Official 2025 Data</h4>
+          <p>Cutoffs sourced directly from Maharashtra CET Cell and DTE official publications.</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <span class="feat-icon">🎯</span>
+        <div>
+          <h4>Category-wise Prediction</h4>
+          <p>Full support for OPEN, OBC, SC, ST, NT, VJ/DT, SEBC, EWS, PWD, TFWS, and Defence categories.</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <span class="feat-icon">📄</span>
+        <div>
+          <h4>PDF Download</h4>
+          <p>Download a formatted preference list PDF — no login required.</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <span class="feat-icon">💾</span>
+        <div>
+          <h4>Save &amp; Compare</h4>
+          <p>Create a free account to save multiple generated lists and revisit them anytime.</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <span class="feat-icon">📱</span>
+        <div>
+          <h4>Mobile Friendly</h4>
+          <p>Fully responsive — works perfectly on your phone, tablet, or desktop.</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <span class="feat-icon">🔒</span>
+        <div>
+          <h4>Free &amp; Private</h4>
+          <p>No ads, no spam, no data selling. Your details are used only to generate your list.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════  CTA BANNER  ══════════════════════════════ -->
+<section class="cta-banner">
+  <div class="container">
+    <h2>Ready to find your college?</h2>
+    <p>Enter your details in under 2 minutes and get your personalized list.</p>
+    <a href="pages/predict.html" class="btn-hero-primary">Start Predicting →</a>
+  </div>
+</section>
+
+<!-- ═══════════════════════════  FOOTER  ══════════════════════════════════ -->
+<footer class="footer">
+  <div class="container footer-inner">
+    <div class="footer-brand">
+      <span class="logo-icon">🎓</span>
+      <span class="logo-text">Admission<span class="logo-accent">Guru</span></span>
+      <p>Helping Maharashtra students find their perfect college match using official cutoff data.</p>
+    </div>
+    <div class="footer-links">
+      <h4>Navigate</h4>
+      <a href="/">Home</a>
+      <a href="pages/predict.html">Predict College</a>
+      <a href="pages/about.html">About</a>
+      <a href="pages/login.html">Login</a>
+    </div>
+    <div class="footer-links">
+      <h4>Exams</h4>
+      <a href="pages/predict.html?exam=CET">CET Engineering</a>
+      <a href="pages/predict.html?exam=Pharmacy">Pharmacy</a>
+      <a href="pages/predict.html?exam=DSY_Engineering">DSY Engineering</a>
+      <a href="pages/predict.html?exam=Diploma">Diploma</a>
+    </div>
+    <div class="footer-note">
+      <h4>Disclaimer</h4>
+      <p>Cutoff data is sourced from official Maharashtra CET Cell &amp; DTE publications. This tool is for reference only — always verify with official sources before making admission decisions.</p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 Admission Guru • Built for Maharashtra Students</p>
+  </div>
+</footer>
+
+<script src="js/auth-state.js"></script>
+</body>
+</html>

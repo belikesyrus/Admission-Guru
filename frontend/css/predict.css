@@ -1,0 +1,148 @@
+/* ══════════════════════════════════════
+   PREDICT PAGE STYLES
+══════════════════════════════════════ */
+
+.step-bar-wrapper {
+  background: var(--white);
+  border-bottom: 1px solid var(--gray-200);
+  padding: 1.25rem 0;
+  position: sticky; top: 65px; z-index: 100;
+}
+.step-progress {
+  display: flex; align-items: center; justify-content: center; gap: 0;
+}
+.step-labels {
+  display: flex; justify-content: center; gap: 0;
+  margin-top: .5rem;
+}
+.step-label {
+  flex: 0 0 auto; width: 104px; text-align: center;
+  font-size: .72rem; color: var(--gray-400); font-weight: 500;
+  transition: color .2s;
+}
+.step-label.active { color: var(--blue-700); font-weight: 700; }
+.step-label.done   { color: var(--green-500); font-weight: 700; }
+
+.predict-container { max-width: 860px; }
+
+.step-panel { display: none; }
+.step-panel.active { display: block; animation: fadeIn .25s ease; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Exam selection grid */
+.exam-select-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem; margin-top: 1.5rem;
+}
+.exam-select-card {
+  border: 2px solid var(--gray-200); border-radius: var(--radius-lg);
+  padding: 1.5rem 1.25rem; text-align: center;
+  background: var(--white); cursor: pointer;
+  transition: border-color .2s, box-shadow .2s, transform .2s;
+  display: flex; flex-direction: column; align-items: center; gap: .4rem;
+}
+.exam-select-card:hover:not(:disabled) {
+  border-color: var(--blue-500); box-shadow: var(--shadow-xl);
+  transform: translateY(-2px);
+}
+.exam-select-card.selected {
+  border-color: var(--blue-600); background: var(--blue-50);
+}
+.exam-soon { opacity: .55; cursor: not-allowed !important; }
+.es-icon  { font-size: 2rem; }
+.es-name  { font-size: .95rem; font-weight: 700; color: var(--gray-900); }
+.es-desc  { font-size: .78rem; color: var(--gray-500); }
+.coming-badge {
+  background: var(--orange-100); color: var(--orange-600);
+  font-size: .7rem; font-weight: 700; padding: .15rem .6rem;
+  border-radius: 50px;
+}
+
+/* Form layout */
+.form-header {
+  display: flex; align-items: flex-start; gap: 1rem; margin-bottom: 1.75rem;
+}
+.btn-sm { padding: .4rem .9rem !important; font-size: .82rem !important; }
+.card-title { font-size: 1.3rem; font-weight: 800; color: var(--gray-900); margin-bottom: .2rem; }
+.card-sub   { font-size: .88rem; color: var(--gray-500); }
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem 1.5rem;
+}
+.form-group.full { grid-column: 1 / -1; }
+
+@media (max-width: 600px) {
+  .form-grid { grid-template-columns: 1fr; }
+  .form-group.full { grid-column: 1; }
+}
+
+.form-actions { margin-top: 2rem; display: flex; gap: 1rem; align-items: center; }
+
+.spinner-inline {
+  display: inline-block; width: 14px; height: 14px; border-radius: 50%;
+  border: 2px solid rgba(255,255,255,.5); border-top-color: white;
+  animation: spin .6s linear infinite; vertical-align: middle;
+}
+
+/* Results page */
+.results-header {
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem;
+}
+.results-title { font-size: 1.2rem; font-weight: 800; color: var(--gray-900); }
+.results-count {
+  font-size: .85rem; color: var(--gray-500); margin-top: .15rem;
+}
+.results-actions { display: flex; gap: .75rem; flex-wrap: wrap; }
+
+.filter-bar {
+  display: flex; gap: .75rem; flex-wrap: wrap;
+  background: var(--gray-50); border-radius: var(--radius);
+  padding: 1rem; margin-bottom: 1.25rem; align-items: flex-end;
+}
+.filter-bar .form-group { flex: 1; min-width: 150px; }
+.filter-bar .form-group label { font-size: .78rem; }
+.filter-bar .form-select { font-size: .82rem; padding: .45rem .7rem; }
+
+.college-row td:first-child { font-weight: 700; color: var(--gray-500); text-align: center; }
+.college-name { font-weight: 600; color: var(--gray-900); }
+.college-code { font-size: .73rem; color: var(--gray-400); }
+
+/* Remove button in table */
+.btn-remove {
+  background: none; border: none;
+  color: var(--gray-400); font-size: 1rem; cursor: pointer;
+  padding: .25rem; border-radius: .25rem;
+  transition: color .15s, background .15s;
+}
+.btn-remove:hover { color: var(--red-500); background: var(--red-100); }
+
+/* Input summary card */
+.summary-card {
+  background: var(--blue-50); border: 1px solid var(--blue-200);
+  border-radius: var(--radius); padding: 1rem 1.25rem;
+  margin-bottom: 1.5rem; font-size: .85rem; color: var(--blue-800);
+}
+.summary-card strong { color: var(--blue-900); }
+.summary-grid {
+  display: flex; flex-wrap: wrap; gap: .5rem 1.5rem; margin-top: .5rem;
+}
+.summary-item { display: flex; gap: .3rem; }
+.summary-key  { font-weight: 600; }
+
+/* Save login prompt */
+.save-prompt {
+  background: var(--orange-100); border: 1px solid var(--orange-200);
+  border-radius: var(--radius); padding: 1rem 1.25rem;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: .75rem;
+  font-size: .88rem; color: var(--orange-600);
+}
+.save-prompt strong { color: var(--orange-700); }

@@ -1,0 +1,53 @@
+=====================================================
+  ADMISSION GURU — How to Start the App
+=====================================================
+
+REQUIREMENTS
+  - Python 3.10 or higher (already installed)
+  - Internet connection for first-time package install (already done)
+
+STEP 1 — Install dependencies (only needed once)
+  Open Command Prompt / PowerShell in this folder and run:
+    python -m pip install flask flask-cors bcrypt pyjwt reportlab
+
+STEP 2 — Start the server
+  Double-click start_server.py, OR run in terminal:
+    python start_server.py
+
+STEP 3 — Open the app
+  Open your browser and go to:
+    http://localhost:5000
+
+STOP THE SERVER
+  Press Ctrl+C in the terminal window.
+
+=====================================================
+  WHAT'S IN THIS FOLDER
+=====================================================
+
+  start_server.py          ← Run this to start the app
+  requirements.txt         ← Python package list
+  app/
+    backend/
+      app.py               ← Flask server + API routes
+      data_parser.py       ← CSV data parsers
+      predictor.py         ← Prediction engine
+      auth.py              ← User auth (SQLite + JWT)
+      pdf_gen.py           ← PDF generation (ReportLab)
+      admissionguru.db     ← SQLite database (auto-created)
+    frontend/
+      index.html           ← Landing page
+      css/                 ← Stylesheets
+      js/                  ← JavaScript
+      pages/               ← predict, login, signup, dashboard, about
+
+  CSV Data Files (root folder):
+    CAP_All_Rounds_2025.csv          ← CET Engineering (34,284 records)
+    2025PHARMA_CAP*.csv.xls          ← Pharmacy (10,854 records)
+    DSY round * cap.csv.xls          ← DSY Engineering (15,735 records)
+    Diploma 25 round *.csv.xls       ← Diploma (27,915 records)
+    DSY pharmacy round 2 25.csv.xls  ← DSY Pharmacy (981 records)
+
+  TOTAL: 89,769 cutoff records
+
+=====================================================

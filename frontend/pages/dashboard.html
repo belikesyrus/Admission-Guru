@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Dashboard — Admission Guru</title>
+  <link rel="stylesheet" href="../css/main.css" />
+  <link rel="stylesheet" href="../css/auth.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+</head>
+<body>
+<nav class="navbar" id="navbar">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo">
+      <span class="logo-icon">🎓</span>
+      <span class="logo-text">Admission<span class="logo-accent">Guru</span></span>
+    </a>
+    <button class="nav-toggle" id="navToggle">&#9776;</button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="/" class="nav-link">Home</a></li>
+      <li><a href="predict.html" class="nav-link">Predict College</a></li>
+      <li><a href="dashboard.html" class="nav-link active" id="dashLink">My Lists</a></li>
+      <li id="authLinks">
+        <a href="login.html" class="nav-link btn-outline-sm">Login</a>
+        <a href="signup.html" class="nav-link btn-primary-sm">Sign Up</a>
+      </li>
+      <li id="userMenu" style="display:none">
+        <span class="user-greeting" id="userGreeting"></span>
+        <button class="btn-outline-sm" id="logoutBtn">Logout</button>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<div class="dash-header">
+  <div class="container">
+    <h1 id="dashTitle">My Saved Lists</h1>
+    <p id="dashSubtitle">All your generated college preference lists in one place</p>
+  </div>
+</div>
+
+<div class="dash-body">
+  <div class="container" style="max-width:900px">
+
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;flex-wrap:wrap;gap:1rem">
+      <h2 style="font-size:1.1rem;font-weight:700;color:var(--gray-900)">
+        Saved Preference Lists
+      </h2>
+      <a href="predict.html" class="btn-orange">+ New Prediction</a>
+    </div>
+
+    <div id="listContainer">
+      <div class="loading-spinner"><div class="spinner"></div><span>Loading your lists...</span></div>
+    </div>
+
+  </div>
+</div>
+
+<script src="../js/auth-state.js"></script>
+<script>
+const API = (location.protocol === "file:" || location.hostname === "") ? "http://localhost:5000/api" : "/api";
+if (!AuthState.isLoggedIn()) {
+  window.location.href = "login.html?redirect=dashboard.html";
+}
+
+const user = AuthState.getUser();
+if (user) {
+  document.getElementById("dashTitle").textContent    = `${user.name}'s Lists`;
+  document.getElementById("dashSubtitle").textContent = `Logged in as ${user.email}`;
+}
+
+function escHtml(s) {
+  return String(s || "")
+    .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+
+function formatDate(iso) {
+  if (!iso) return "";
+  const d = new Date(iso);
+  return d.toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" });
+}
+
+async function loadLists() {
+  const container = document.getElementById("listContainer");
+  try {
+    const res  = await AuthState.authFetch(`${API}/lists`);
+    const data = await res.json();
+    const lists = data.lists || [];
+
+    if (!lists.length) {
+      container.innerHTML = `
+        <div class="empty-state card">
+          <div class="empty-icon">📋</div>
+          <h3>No saved lists yet</h3>
+          <p>Generate a college prediction and click "Save List" to store it here.</p>
+          <a href="predict.html" class="btn-primary" style="margin-top:1.25rem">Predict My College</a>
+        </div>`;
+      return;
+    }
+
+    container.innerHTML = lists.map(lst => {
+      const summary  = lst.input_summary || {};
+      const results  = lst.results || [];
+      const examLabel = summary["Exam Type"] || lst.exam_type || "—";
+      const scoreLbl  = summary["CET Percentile"] || summary["Diploma Percentage"] || summary["SSC / Entrance Marks (%)"] || "—";
+
+      return `
+        <div class="list-card">
+          <div class="list-card-header">
+            <div>
+              <span class="tag-badge">${escHtml(examLabel)}</span>
+              <span class="tag-badge" style="background:var(--orange-100);color:var(--orange-600);margin-left:.4rem">
+                ${results.length} colleges
+              </span>
+              <div class="list-card-meta">Generated on ${formatDate(lst.created)}</div>
+            </div>
+            <div class="list-card-actions">
+              <button class="btn-ghost btn-sm" onclick="downloadListPDF(${lst.id})">⬇ PDF</button>
+              <button class="btn-ghost btn-sm" style="color:var(--red-500)" onclick="deleteList(${lst.id}, this)">🗑 Delete</button>
+            </div>
+          </div>
+          <div class="summary-grid" style="font-size:.8rem;color:var(--gray-600)">
+            ${Object.entries(summary).slice(0, 5).map(([k,v]) =>
+              `<div class="summary-item"><span class="summary-key">${escHtml(k)}:</span><span>${escHtml(String(v))}</span></div>`
+            ).join("")}
+          </div>
+        </div>`;
+    }).join("");
+
+    // Store lists for PDF download
+    window._savedLists = lists;
+
+  } catch (err) {
+    container.innerHTML = `<div class="alert alert-error">Failed to load lists. Please refresh.</div>`;
+  }
+}
+
+async function deleteList(id, btn) {
+  if (!confirm("Delete this list?")) return;
+  try {
+    const res = await AuthState.authFetch(`${API}/lists/${id}`, { method: "DELETE" });
+    if (res.ok) loadLists();
+    else        alert("Delete failed.");
+  } catch {
+    alert("Network error.");
+  }
+}
+
+async function downloadListPDF(id) {
+  const lists = window._savedLists || [];
+  const lst   = lists.find(l => l.id === id);
+  if (!lst) return;
+
+  const btn = event.target;
+  btn.textContent = "⏳..."; btn.disabled = true;
+
+  try {
+    const res = await fetch(`${API}/pdf`, {
+      method:  "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        results:       lst.results,
+        input_summary: lst.input_summary,
+        exam_type:     lst.input_summary?.["Exam Type"] || lst.exam_type,
+      }),
+    });
+    if (!res.ok) throw new Error();
+    const blob = await res.blob();
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement("a");
+    a.href = url; a.download = `AdmissionGuru_${lst.id}.pdf`;
+    document.body.appendChild(a); a.click();
+    document.body.removeChild(a); URL.revokeObjectURL(url);
+  } catch {
+    alert("PDF generation failed.");
+  } finally {
+    btn.textContent = "⬇ PDF"; btn.disabled = false;
+  }
+}
+
+loadLists();
+</script>
+</body>
+</html>

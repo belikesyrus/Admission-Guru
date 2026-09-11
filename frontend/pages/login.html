@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login — Admission Guru</title>
+  <link rel="stylesheet" href="../css/main.css" />
+  <link rel="stylesheet" href="../css/auth.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+</head>
+<body>
+<nav class="navbar" id="navbar">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo">
+      <span class="logo-icon">🎓</span>
+      <span class="logo-text">Admission<span class="logo-accent">Guru</span></span>
+    </a>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">&#9776;</button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="/" class="nav-link">Home</a></li>
+      <li><a href="predict.html" class="nav-link">Predict College</a></li>
+      <li id="authLinks">
+        <a href="login.html" class="nav-link btn-outline-sm">Login</a>
+        <a href="signup.html" class="nav-link btn-primary-sm">Sign Up</a>
+      </li>
+      <li id="userMenu" style="display:none">
+        <span class="user-greeting" id="userGreeting"></span>
+        <button class="btn-outline-sm" id="logoutBtn">Logout</button>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<div class="auth-page">
+  <div class="auth-card">
+    <div class="auth-logo">
+      <span>🎓</span>
+      <span>Admission<span class="logo-accent">Guru</span></span>
+    </div>
+    <h1 class="auth-title">Welcome back</h1>
+    <p class="auth-sub">Login to access your saved college lists</p>
+
+    <div id="alertBox"></div>
+
+    <form id="loginForm" novalidate>
+      <div class="form-group">
+        <label class="form-label" for="email">Email Address</label>
+        <input class="form-input" type="email" id="email" name="email"
+               placeholder="you@example.com" autocomplete="email" required />
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="password">Password</label>
+        <div class="input-eye-wrapper">
+          <input class="form-input" type="password" id="password" name="password"
+                 placeholder="••••••••" autocomplete="current-password" required />
+          <button type="button" class="eye-btn" id="eyeBtn" aria-label="Toggle password">👁️</button>
+        </div>
+      </div>
+      <div class="form-actions-row">
+        <label class="remember-label">
+          <input type="checkbox" id="remember" /> Remember me
+        </label>
+        <a href="forgot.html" class="form-link">Forgot password?</a>
+      </div>
+      <button type="submit" class="btn-primary btn-full" id="loginBtn">
+        <span id="loginBtnText">Login →</span>
+        <span id="loginBtnLoader" style="display:none"><span class="spinner-inline"></span> Logging in...</span>
+      </button>
+    </form>
+
+    <div class="auth-divider"><span>Don't have an account?</span></div>
+    <a href="signup.html" class="btn-outline btn-full" style="text-align:center">Create a free account</a>
+  </div>
+</div>
+
+<script src="../js/auth-state.js"></script>
+<script>
+const API = (location.protocol === "file:" || location.hostname === "") ? "http://localhost:5000/api" : "/api";
+
+// Redirect if already logged in
+if (AuthState.isLoggedIn()) {
+  window.location.href = "dashboard.html";
+}
+
+function showAlert(msg, type = "error") {
+  const b = document.getElementById("alertBox");
+  b.innerHTML = `<div class="alert alert-${type}">${msg}</div>`;
+}
+
+document.getElementById("eyeBtn").addEventListener("click", () => {
+  const pw = document.getElementById("password");
+  pw.type = pw.type === "password" ? "text" : "password";
+});
+
+document.getElementById("loginForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const email    = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value.trim();
+
+  if (!email || !password) {
+    showAlert("Please enter your email and password.");
+    return;
+  }
+
+  const btn = document.getElementById("loginBtn");
+  btn.disabled = true;
+  document.getElementById("loginBtnText").style.display   = "none";
+  document.getElementById("loginBtnLoader").style.display = "";
+
+  try {
+    const res  = await fetch(`${API}/auth/login`, {
+      method:  "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
+    const data = await res.json();
+
+    if (!res.ok) {
+      showAlert(data.error || "Login failed.");
+      return;
+    }
+
+    AuthState.setSession(data.user.token, data.user);
+
+    // Redirect
+    const params   = new URLSearchParams(window.location.search);
+    const redirect = params.get("redirect");
+    window.location.href = redirect || "dashboard.html";
+
+  } catch {
+    showAlert("Network error. Please try again.");
+  } finally {
+    btn.disabled = false;
+    document.getElementById("loginBtnText").style.display   = "";
+    document.getElementById("loginBtnLoader").style.display = "none";
+  }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Predict My College — Admission Guru</title>
+  <link rel="stylesheet" href="../css/main.css" />
+  <link rel="stylesheet" href="../css/predict.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+<nav class="navbar" id="navbar">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo">
+      <span class="logo-icon">🎓</span>
+      <span class="logo-text">Admission<span class="logo-accent">Guru</span></span>
+    </a>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">&#9776;</button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="/" class="nav-link">Home</a></li>
+      <li><a href="predict.html" class="nav-link active">Predict College</a></li>
+      <li><a href="dashboard.html" class="nav-link" id="dashLink" style="display:none">My Lists</a></li>
+      <li><a href="about.html" class="nav-link">About</a></li>
+      <li id="authLinks">
+        <a href="login.html" class="nav-link btn-outline-sm">Login</a>
+        <a href="signup.html" class="nav-link btn-primary-sm">Sign Up</a>
+      </li>
+      <li id="userMenu" style="display:none">
+        <span class="user-greeting" id="userGreeting"></span>
+        <button class="btn-outline-sm" id="logoutBtn">Logout</button>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<div class="page-hero">
+  <h1>🎯 Predict My College</h1>
+  <p>Answer a few questions to get your personalized college preference list</p>
+</div>
+
+<!-- Server offline banner (hidden when server is up) -->
+<div id="serverOfflineBanner" style="display:none;background:#fef2f2;border-bottom:2px solid #fca5a5;padding:.9rem 1.25rem;text-align:center;font-size:.9rem;color:#991b1b;position:sticky;top:65px;z-index:999">
+  ⚠️ <strong>Server not running.</strong>
+  Start the server first: open <code style="background:#fee2e2;padding:.1rem .4rem;border-radius:.25rem">START HERE.bat</code>
+  (or run <code style="background:#fee2e2;padding:.1rem .4rem;border-radius:.25rem">python start_server.py</code>)
+  in the AdmissionGuru folder, then refresh this page.
+  &nbsp;
+  <button onclick="checkServerHealth();this.textContent='Checking…'" style="background:#dc2626;color:white;border:none;padding:.25rem .8rem;border-radius:.35rem;cursor:pointer;font-size:.82rem">Retry</button>
+</div>
+
+<!-- ═══════  STEP INDICATOR  ═══════ -->
+<div class="step-bar-wrapper">
+  <div class="container">
+    <div class="step-progress" id="stepProgress">
+      <div class="step-dot active" data-step="1">1</div>
+      <div class="step-line"    id="line-1-2"></div>
+      <div class="step-dot"     data-step="2">2</div>
+      <div class="step-line"    id="line-2-3"></div>
+      <div class="step-dot"     data-step="3">3</div>
+    </div>
+    <div class="step-labels">
+      <span class="step-label active" data-step="1">Select Exam</span>
+      <span class="step-label"        data-step="2">Enter Details</span>
+      <span class="step-label"        data-step="3">View Results</span>
+    </div>
+  </div>
+</div>
+
+<div class="page-body">
+  <div class="container predict-container">
+
+    <!-- ══ STEP 1: EXAM SELECTION ══ -->
+    <div id="step1" class="step-panel active">
+      <div class="card">
+        <h2 class="card-title">Which exam did you take?</h2>
+        <p class="card-sub">Select the entrance exam or admission pathway you used</p>
+        <div class="exam-select-grid" id="examGrid">
+
+          <button class="exam-select-card" data-exam="CET">
+            <span class="es-icon">🏛️</span>
+            <span class="es-name">CET Engineering</span>
+            <span class="es-desc">MHT-CET for B.E./B.Tech</span>
+          </button>
+
+          <button class="exam-select-card" data-exam="DSY_Engineering">
+            <span class="es-icon">🔧</span>
+            <span class="es-name">Direct 2nd Year Engg</span>
+            <span class="es-desc">Diploma → Engineering</span>
+          </button>
+
+          <button class="exam-select-card" data-exam="Diploma">
+            <span class="es-icon">📐</span>
+            <span class="es-name">Diploma (Post SSC)</span>
+            <span class="es-desc">Post-SSC Diploma via DTE</span>
+          </button>
+
+          <button class="exam-select-card" data-exam="Pharmacy">
+            <span class="es-icon">💊</span>
+            <span class="es-name">Pharmacy (B.Pharm)</span>
+            <span class="es-desc">CET-based Pharmacy admission</span>
+          </button>
+
+          <button class="exam-select-card" data-exam="DSY_Pharmacy">
+            <span class="es-icon">🧪</span>
+            <span class="es-name">Direct 2nd Year Pharmacy</span>
+            <span class="es-desc">Diploma → B.Pharmacy</span>
+          </button>
+
+          <button class="exam-select-card exam-soon" disabled>
+            <span class="es-icon">📊</span>
+            <span class="es-name">JEE Mains / Advanced</span>
+            <span class="es-desc coming-badge">Coming Soon</span>
+          </button>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ STEP 2: FORM ══ -->
+    <div id="step2" class="step-panel">
+      <div class="card">
+        <div class="form-header">
+          <button class="btn-ghost btn-sm" id="backBtn">← Back</button>
+          <div>
+            <h2 class="card-title" id="formTitle">Enter Your Details</h2>
+            <p class="card-sub" id="formSubtitle"></p>
+          </div>
+        </div>
+
+        <div id="alertBox" style="display:none"></div>
+
+        <form id="predictForm" novalidate>
+          <div id="formFields" class="form-grid"></div>
+          <div class="form-actions">
+            <button type="submit" class="btn-orange" id="predictBtn">
+              <span id="predictBtnText">🔍 Find Colleges</span>
+              <span id="predictBtnLoader" style="display:none">
+                <span class="spinner-inline"></span> Searching...
+              </span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- ══ STEP 3: RESULTS ══ -->
+    <div id="step3" class="step-panel">
+      <!-- Results injected by JS -->
+    </div>
+
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer-bottom">
+    <p>© 2025 Admission Guru • Cutoff data from Maharashtra CET Cell & DTE</p>
+  </div>
+</footer>
+
+<script src="../js/auth-state.js"></script>
+<script src="../js/predict.js"></script>
+</body>
+</html>
