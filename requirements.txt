@@ -3,3 +3,4 @@ flask-cors
 bcrypt
 PyJWT==2.13.0
 reportlab==5.0.1
+gunicorn
